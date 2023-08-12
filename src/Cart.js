@@ -1,4 +1,4 @@
-import React, {  useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import {FaTrash} from 'react-icons/fa'
 import Button from 'react-bootstrap/Button';
@@ -6,7 +6,8 @@ import Form from 'react-bootstrap/Form';
 import { Link,useNavigate } from 'react-router-dom';
 import star from './star';
 import './bootstrap.min.css'
-import { useCart } from 'react-use-cart';
+import { useParams } from 'react-router-dom';
+//import { useCart } from 'react-use-cart';
 
 
 
@@ -15,6 +16,7 @@ function Cart() {
  
 
     const [data,setData]= useState([])
+    //const [arr,setArr]=useState([])
 
     
   
@@ -47,8 +49,11 @@ function Cart() {
         
         
     ];
-   
-
+  
+    const params = useParams();
+useEffect(()=>{
+  console.log(params.id);
+},[])
     
 const handlecart=(product)=>{
   setData([...data,product])
@@ -60,19 +65,19 @@ const History= useNavigate();
 const handleDelete=(id)=>{
  
   alert(`Are You Sure You Want To Delete`)
-  console.log(star.map((item)=>item.id).indexOf(id)); 
-  let index=star.map((item)=>item.id).indexOf(id)
+
+  let index=products.map((item)=>item.id).indexOf(id)
   console.log(index);
-  star.splice(index,1)
+  products.splice(index,1)
   console.log(star);
-  History('/cart')
+  History('/')
 }
 
 
 // const handleDelete=()=>{
 
 // }
- 
+
   return (
 
 <div>
@@ -91,8 +96,9 @@ const handleDelete=(id)=>{
   <tbody>
  {
  
-products.map((product)=>(
-<tr key={product.id}>
+ products.filter((product)=> product.id==params.id).map(product=>
+  (
+    <tr key={product.id}>
  
   <td>{product.id}</td>
   <td>{product.name}</td>
@@ -106,7 +112,9 @@ products.map((product)=>(
    
    </td>
 </tr>
-))
+    ))
+
+
 
  }
 
